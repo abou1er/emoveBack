@@ -90,7 +90,15 @@ app.post('/voitures', async (req, res) => {
             const voitures = await Voitures.find() // On récupère tout les voitures
             await res.json(voitures)
         })
-        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
+        //*/*/*/*/*/*/*/fin get*/*/*/*/*/*/*/
+
+        //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
+    app.get('/voitures/:id', async (req, res) => { 
+       // app.get('/:id', async (req, res) => {             //peut etre rajouter la route /voitures/:id
+            const id = req.params.id
+            const voitures = await Voitures.findOne({ _id: id })
+            res.json(voitures)
+        })
 
 
 // --------------FIN METHODE VOITURES------------------------------------------
@@ -140,7 +148,16 @@ app.post('/voitures', async (req, res) => {
             const motos = await Motos.find() // On récupère tout les motos
             await res.json(motos)
         })
-        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
+        //*/*/*/*/*/*/*/fin get all*/*/*/*/*/*/*/
+
+
+            //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
+            app.get('/motos/:id', async (req, res) => {     
+            const id = req.params.id
+            const motos = await Motos.findOne({ _id: id })
+            res.json(motos)
+        })
+        //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
 
 
 // --------------FIN METHODE MOTOS------------------------------------------
@@ -182,12 +199,21 @@ app.post('/voitures', async (req, res) => {
             return
         })
         //*************fin post*************
+
         //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
         app.get('/trottinettes', async (req, res) => {
             const trottinettes = await Trottinettes.find() // On récupère tout les trottinettes
             await res.json(trottinettes)
         })
-        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
+        //*/*/*/*/*/*/*/fin get all */*/*/*/*/*/*/
+
+            //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
+            app.get('/trottinettes/:id', async (req, res) => { 
+            const id = req.params.id
+            const trottinettes = await Trottinettes.findOne({ _id: id })
+            res.json(trottinettes)
+        })
+        //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
 
 
 // --------------FIN METHODE TROTTINETTE------------------------------------------
