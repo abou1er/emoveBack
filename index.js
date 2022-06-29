@@ -7,7 +7,7 @@ const Motos = require('./motos');
 const Trottinettes = require('./trottinettes');
 
 app.get('/', function (req, res) { // création de la route sous le verbe get
-    res.send('Hello world  ! ') // envoi de hello world a l'utilisateur
+    res.send('Hello world  ! ') // envoi de hello world à l'utilisateur
 })
 
 
@@ -92,6 +92,7 @@ app.get('/voitures', async (req, res) => {
 })
 //*/*/*/*/*/*/*/FIN get all*/*/*/*/*/*/*/
 
+
 //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
 app.get('/voitures/:id', async (req, res) => {
     // app.get('/:id', async (req, res) => {             //peut être rajouté la route /voitures/:id
@@ -99,6 +100,7 @@ app.get('/voitures/:id', async (req, res) => {
     const voitures = await Voitures.findOne({ _id: id })
     res.json(voitures)
 })
+//*/*/*/*/*/*/*/FIN get by id*/*/*/*/*/*/*/
 
 
 //*************delete*************
@@ -110,6 +112,61 @@ app.delete('/voitures/:id', async (req, res) => {
 //*************FIN delete*************
 
 
+//***************patch****************
+app.patch('/voitures/:id', async (req, res) => {
+    const id = req.params.id
+    const voitures = await Voitures.findOne({ _id: id })
+
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const annee = req.body.annee;
+    const kilometrage = req.body.kilometrage;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const prix = req.body.prix;
+
+    if (image) {
+        voitures.image = image
+    }
+    if (image2) {
+        voitures.image2 = image2
+    }
+    if (image3) {
+        voitures.image3 = image3
+    }
+    if (categorie) {
+        voitures.categorie = categorie
+    }
+    if (marque) {
+        voitures.marque = marque
+    }
+    if (modele) {
+        voitures.modele = modele
+    }
+    if (annee) {
+        voitures.annee = annee
+    }
+    if (kilometrage) {
+        voitures.kilometrage = kilometrage
+    }
+    if (puissance) {
+        voitures.puissance = puissance
+    }
+    if (description) {
+        voitures.description = description
+    }
+    if (prix) {
+        voitures.prix = prix
+    }
+
+    await voitures.save()
+    res.json(voitures)
+})
+//***************FIN patch****************
 
 // --------------FIN METHODE VOITURES------------------------------------------
 //-----------------------------------------------------------------------------
@@ -153,9 +210,10 @@ app.post('/motos', async (req, res) => {
 })
 //*************fin post*************
 
+
 //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
 app.get('/motos', async (req, res) => {
-    const motos = await Motos.find() // On récupère tout les motos
+    const motos = await Motos.find() // On récupère toutes les motos
     await res.json(motos)
 })
 //*/*/*/*/*/*/*/fin get all*/*/*/*/*/*/*/
@@ -177,6 +235,64 @@ app.delete('/motos/:id', async (req, res) => {
     res.json(motos)
 })
 //*************FIN delete*************
+
+
+//***************patch****************
+app.patch('/motos/:id', async (req, res) => {
+    const id = req.params.id
+    const motos = await Motos.findOne({ _id: id })
+
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const permis = req.body.permis;
+    const autonomie = req.body.autonomie;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const prix = req.body.prix;
+
+    if (image) {
+        motos.image = image
+    }
+    if (image2) {
+        motos.image2 = image2
+    }
+    if (image3) {
+        motos.image3 = image3
+    }
+    if (categorie) {
+        motos.categorie = categorie
+    }
+    if (marque) {
+        motos.marque = marque
+    }
+    if (modele) {
+        motos.modele = modele
+    }
+    if (permis) {
+        motos.permis = permis
+    }
+    if (autonomie) {
+        motos.autonomie = autonomie
+    }
+    if (puissance) {
+        motos.puissance = puissance
+    }
+    if (description) {
+        motos.description = description
+    }
+    if (prix) {
+        motos.prix = prix
+    }
+
+    await motos.save()
+    res.json(motos)
+})
+//***************FIN patch****************
+
 
 // --------------FIN METHODE MOTOS------------------------------------------
 //--------------------------------------------------------------------------
@@ -218,12 +334,14 @@ app.post('/trottinettes', async (req, res) => {
 })
 //*************fin post*************
 
+
 //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
 app.get('/trottinettes', async (req, res) => {
-    const trottinettes = await Trottinettes.find() // On récupère tout les trottinettes
+    const trottinettes = await Trottinettes.find() // On récupère toutes les trottinettes
     await res.json(trottinettes)
 })
 //*/*/*/*/*/*/*/fin get all */*/*/*/*/*/*/
+
 
 //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
 app.get('/trottinettes/:id', async (req, res) => {
@@ -242,4 +360,59 @@ app.delete('/trottinettes/:id', async (req, res) => {
 })
 //*************FIN delete*************
 
-// --------------FIN METHODE TROTTINETTE------------------------------------------
+
+//***************patch****************
+app.patch('/trottinettes/:id', async (req, res) => {
+    const id = req.params.id
+    const trottinettes = await Trottinettes.findOne({ _id: id })
+
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const autonomie = req.body.autonomie;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const prix = req.body.prix;
+
+    if (image) {
+        trottinettes.image = image
+    }
+    if (image2) {
+        trottinettes.image2 = image2
+    }
+    if (image3) {
+        trottinettes.image3 = image3
+    }
+    if (categorie) {
+        trottinettes.categorie = categorie
+    }
+    if (marque) {
+        trottinettes.marque = marque
+    }
+    if (modele) {
+        trottinettes.modele = modele
+    }
+    if (autonomie) {
+        trottinettes.autonomie = autonomie
+    }
+    if (puissance) {
+        trottinettes.puissance = puissance
+    }
+    if (description) {
+        trottinettes.description = description
+    }
+    if (prix) {
+        trottinettes.prix = prix
+    }
+
+    await trottinettes.save()
+    res.json(trottinettes)
+})
+//***************FIN patch****************
+
+
+//---------------FIN METHODE TROTTINETTE------------------------------------------
+//--------------------------------------------------------------------------------
