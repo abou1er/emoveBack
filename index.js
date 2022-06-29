@@ -4,13 +4,14 @@ let port = 7878;
 const mongoose = require('mongoose');
 const Voitures = require('./voitures');
 const Motos = require('./motos');
+const Trottinettes = require('./trottinettes');
 
 app.get('/', function(req, res) { // création de la route sous le verbe get
     res.send('Hello world  ! ') // envoi de hello world a l'utilisateur
 })
 
 
-app.listen(port, () =>  { // ecoute du serveur sur le port 8080
+app.listen(port, () =>  { // ecoute du serveur sur le port 7878
     console.log('le serveur fonctionne')
 })
 
@@ -20,6 +21,28 @@ mongoose.connect(
         if (err) throw 'erreur est : ', err;
         console.log('connected to MongoDB')
     });
+
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');  //r.sH('....', '*' étoile permet la connexion de tous les serveur)
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');  //<----Bonne pratique
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -60,6 +83,16 @@ app.post('/voitures', async (req, res) => {
     return
 })
     //*************post*************
+
+
+        //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
+        app.get('/voitures', async (req, res) => {
+            const voitures = await Voitures.find() // On récupère tout les voitures
+            await res.json(voitures)
+        })
+        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
+
+
 // --------------FIN METHODE VOITURES------------------------------------------
 
 
@@ -102,6 +135,59 @@ app.post('/voitures', async (req, res) => {
         })
         //*************fin post*************
 
+        //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
+        app.get('/motos', async (req, res) => {
+            const motos = await Motos.find() // On récupère tout les motos
+            await res.json(motos)
+        })
+        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
 
 
 // --------------FIN METHODE MOTOS------------------------------------------
+
+
+
+
+
+// --------------METHODE TROTTINETTE------------------------------------------
+        //*************post*************
+        app.post('/trottinettes', async (req, res) => {
+            const image = req.body.image;
+            const image2 = req.body.image2;
+            const image3 = req.body.image3;
+            const categorie = req.body.categorie;
+            const marque = req.body.marque ;
+            const modele = req.body.modele;
+            const autonomie = req.body.autonomie;
+            const puissance = req.body.puissance;
+            const description = req.body.description; 
+            const prix = req.body.prix ;
+        
+            const trottinettes = new Trottinettes({
+                image : image,
+                image2 : image2,
+                image3 : image3,
+                categorie : categorie,
+                marque : marque,
+                modele : modele,
+                autonomie : autonomie,
+                puissance : puissance,
+                description : description,
+                prix : prix,
+            })
+        
+        
+            await trottinettes.save()
+            res.json(trottinettes)
+            return
+        })
+        //*************fin post*************
+        //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
+        app.get('/trottinettes', async (req, res) => {
+            const trottinettes = await Trottinettes.find() // On récupère tout les trottinettes
+            await res.json(trottinettes)
+        })
+        //*/*/*/*/*/*/*/get*/*/*/*/*/*/*/
+
+
+// --------------FIN METHODE TROTTINETTE------------------------------------------
