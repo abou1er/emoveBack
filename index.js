@@ -87,7 +87,7 @@ app.post('/voitures', async (req, res) => {
 
 //*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
 app.get('/voitures', async (req, res) => {
-    const voitures = await Voitures.find() // On récupère toutes les voitures
+    const voitures = await Voitures.find()              // On récupère toutes les voitures
     await res.json(voitures)
 })
 //*/*/*/*/*/*/*/FIN get all*/*/*/*/*/*/*/
@@ -101,6 +101,19 @@ app.get('/voitures/:id', async (req, res) => {
     res.json(voitures)
 })
 //*/*/*/*/*/*/*/FIN get by id*/*/*/*/*/*/*/
+
+
+// ************get by Prix******************
+app.get('/voitures/byPrix', async (req,res) =>{
+    let min = req.query.min;                           
+    let max = req.query.max;
+    const voituresByPrix = await Voitures.find({
+        prix:  { $gte: min, $lte: max }
+    })
+    res.json(voituresByPrix) 
+})
+// ************FIN get by Prix******************
+
 
 
 //*************delete*************
@@ -172,6 +185,8 @@ app.patch('/voitures/:id', async (req, res) => {
 //-----------------------------------------------------------------------------
 
 
+
+
 // --------------METHODE MOTOS------------------------------------------
 //*************post*************
 app.post('/motos', async (req, res) => {
@@ -226,6 +241,18 @@ app.get('/motos/:id', async (req, res) => {
     res.json(motos)
 })
 //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
+
+
+// ************get by Prix******************
+app.get('/motos/byPrix', async (req,res) =>{
+    let min = req.query.min;                           
+    let max = req.query.max;
+    const motosByPrix = await Motos.find({
+        prix:  { $gte: min, $lte: max }
+    })
+    res.json(motosByPrix) 
+})
+// ************FIN get by Prix******************
 
 
 //*************delete*************
@@ -293,7 +320,6 @@ app.patch('/motos/:id', async (req, res) => {
 })
 //***************FIN patch****************
 
-
 // --------------FIN METHODE MOTOS------------------------------------------
 //--------------------------------------------------------------------------
 
@@ -350,6 +376,18 @@ app.get('/trottinettes/:id', async (req, res) => {
     res.json(trottinettes)
 })
 //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
+
+
+// ************get by Prix******************
+app.get('/trottinettes/byPrix', async (req,res) =>{
+    let min = req.query.min;                           
+    let max = req.query.max;
+    const trottinettesByPrix = await Trottinettes.find({
+        prix:  { $gte: min, $lte: max }
+    })
+    res.json(trottinettesByPrix) 
+})
+// ************FIN get by Prix******************
 
 
 //*************delete*************
