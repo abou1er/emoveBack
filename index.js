@@ -22,6 +22,15 @@ mongoose.connect(
         console.log('connected to MongoDB')
     });
 
+// test
+const myConect = mongoose.connect(
+    'mongodb+srv://abou:1234@cluster0.vn3vc.mongodb.net/emove?retryWrites=true&w=majority'
+    , err => {
+        if (err) throw 'erreur est : ', err;
+        console.log('connected to MongoDB')
+    });
+// test
+
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
