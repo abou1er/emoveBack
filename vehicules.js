@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const schemaV  = mongoose.Schema({
+const schema = mongoose.Schema({
     image : String,
     image2 : String,
     image3 : String,
@@ -8,13 +8,14 @@ const schemaV  = mongoose.Schema({
     marque : String,
     modele : String,
     annee : String,
+    autonomie : String,
+    permis :String,
     kilometrage : String,
-    puissanceFiscale : String,
+    puissanceFiscale : Number,
+    puissance : Number,
     description : String, 
+    equivalent : String,
     prix : Number 
-    
-
-    
 })
 
-module.exports = mongoose.model('voiture', schemaV)
+module.exports = mongoose.model('vehicules', schema)
