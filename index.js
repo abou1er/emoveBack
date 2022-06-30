@@ -11,9 +11,9 @@ const Vehicules = require('./vehicules');
 // -----------------FIN SUPPRESSION-----------------------------------
 
 
-app.get('/', function (req, res) {  // création de la route sous le verbe get
-    res.send('Hello world  ! ')     // envoi de hello world à l'utilisateur
-})
+// app.get('/', function (req, res) {  // création de la route sous le verbe get
+//     res.send('Hello world  ! ')     // envoi de hello world à l'utilisateur
+// })
 
 
 app.listen(port, () => {            // ecoute du serveur sur le port 7878
@@ -91,7 +91,7 @@ app.post('/', async (req, res) => {
     const autonomie = req.body.autonomie;
     const permis = req.body.permis;
     const kilometrage = req.body.kilometrage;
-    const puissanceFiscale = req.body.puissanceFiscale;
+    // const puissanceFiscale = req.body.puissanceFiscale;
     const puissance = req.body.puissance;
     const description = req.body.description;
     const equivalent = req.body.equivalent;
@@ -108,7 +108,7 @@ app.post('/', async (req, res) => {
         autonomie : autonomie,
         permis : permis,
         kilometrage: kilometrage,
-        puissanceFiscale : puissanceFiscale,
+        // puissanceFiscale : puissanceFiscale,
         puissance: puissance,
         description: description,
         equivalent : equivalent,
