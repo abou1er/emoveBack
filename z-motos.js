@@ -9,6 +9,7 @@ const schemaM  = mongoose.Schema({
     modele : String,
     permis :String,
     autonomie : String,
+
     puissance : String,
     description : String, 
     equivalent : String,

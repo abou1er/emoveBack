@@ -2,17 +2,22 @@ const express = require('express');
 let app = express(); // création de l'objet représentant notre application express
 let port = 7878;
 const mongoose = require('mongoose');
-const Voitures = require('./voitures');
-const Motos = require('./motos');
-const Trottinettes = require('./trottinettes');
 
-app.get('/', function (req, res) { // création de la route sous le verbe get
-    res.send('Hello world  ! ') // envoi de hello world à l'utilisateur
+const Vehicules = require('./vehicules');
+// -----------------à SUPPRIMER-----------------------------------
+// const Voitures = require('./z-voitures');
+// const Motos = require('./z-motos');
+// const Trottinettes = require('./z-trottinettes');
+// -----------------FIN SUPPRESSION-----------------------------------
+
+
+app.get('/', function (req, res) {  // création de la route sous le verbe get
+    res.send('Hello world  ! ')     // envoi de hello world à l'utilisateur
 })
 
 
-app.listen(port, () => { // ecoute du serveur sur le port 7878
-    console.log('le serveur fonctionne')
+app.listen(port, () => {            // ecoute du serveur sur le port 7878
+    console.log('le serveur fonctionne sur le port 7878')
 })
 
 mongoose.connect(
@@ -22,6 +27,7 @@ mongoose.connect(
         console.log('connected to MongoDB')
     });
 
+//---------------------------------------------------------------------------------------------- 
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
@@ -42,10 +48,318 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-
+//---------------------------------------------------------------------------------------------- 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
+
+
+
+// --------------METHODES Vehicules------------------------------------------
+
+//*****************GET All**********************************
+app.get('/', async (req, res) => {
+    const vehicules = await Vehicules.find()              // On récupère tous les véhicules
+    await res.json(vehicules)
+})
+//*************FIN GET All**********************************
+
+
+// ************GET by Price******************
+app.get('/byPrice', async (req, res) => {
+    let min = req.query.min;                           
+    let max = req.query.max;                              // On trie par Prix tous les véhicules
+    const vehicules = await Vehicules.find({
+        prix:  { $gte: min, $lte: max }
+    })
+    res.json(vehicules) 
+})
+// ************FIN GET by Price******************
+
+
+//*******************POST************************
+app.post('/', async (req, res) => {
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const annee = req.body.annee;
+    const autonomie = req.body.autonomie;
+    const permis = req.body.permis;
+    const kilometrage = req.body.kilometrage;
+    const puissanceFiscale = req.body.puissanceFiscale;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const equivalent = req.body.equivalent;
+    const prix = req.body.prix;
+
+    const vehicules = new Vehicules({
+        image: image,
+        image2: image2,
+        image3: image3,
+        categorie: categorie,
+        marque: marque,
+        modele: modele,
+        annee: annee,
+        autonomie : autonomie,
+        permis : permis,
+        kilometrage: kilometrage,
+        puissanceFiscale : puissanceFiscale,
+        puissance: puissance,
+        description: description,
+        equivalent : equivalent,
+        prix: prix,
+    })
+
+    await vehicules.save()
+    res.json(vehicules)
+    return
+})
+//***********************FIN POST********************
+
+
+//***************patch****************
+app.patch('/:id', async (req, res) => {
+    const id = req.params.id
+    const vehicules = await Vehicules.findOne({ _id: id })
+
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const annee = req.body.annee;
+    const autonomie = req.body.autonomie;
+    const permis = req.body.permis;
+    const kilometrage = req.body.kilometrage;
+    const puissanceFiscale = req.body.puissanceFiscale;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const equivalent = req.body.equivalent;
+    const prix = req.body.prix;
+
+    if (image) {    vehicules.image = image    }
+    if (image2) {   vehicules.image2 = image2    }
+    if (image3) {   vehicules.image3 = image3    }
+    if (categorie) {    vehicules.categorie = categorie    }
+    if (marque) {   vehicules.marque = marque    }
+    if (modele) {   vehicules.modele = modele    }
+    if (annee) {    vehicules.annee = annee    }
+    if (autonomie) {    vehicules.autonomie = autonomie }
+    if (permis) {   vehicules.permis = permis   }
+    if (kilometrage) {  vehicules.kilometrage = kilometrage    }
+    if (puissanceFiscale) { vehicules.puissanceFiscale = puissanceFiscale   }
+    if (puissance) {    vehicules.puissance = puissance    }
+    if (description) {  vehicules.description = description    }
+    if (equivalent) {   vehicules.equivalent = equivalent   }
+    if (prix) { vehicules.prix = prix    }
+
+    await vehicules.save()
+    res.json(vehicules)
+})
+//***************FIN patch****************
+
+
+
+
+
+
+
+
+
+
+// --------------FIN METHODEs Vehicules------------------------------------------
+//-----------------------------------------------------------------------------
+
+
+
+
+
+//*************post*************
+// app.post('/voitures', async (req, res) => {
+//     const image = req.body.image;
+//     const image2 = req.body.image2;
+//     const image3 = req.body.image3;
+//     const categorie = req.body.categorie;
+//     const marque = req.body.marque;
+//     const modele = req.body.modele;
+//     const annee = req.body.annee;
+//     const kilometrage = req.body.kilometrage;
+//     const puissance = req.body.puissance;
+//     const description = req.body.description;
+//     const prix = req.body.prix;
+
+//     const voitures = new Voitures({
+//         image: image,
+//         image2: image2,
+//         image3: image3,
+//         categorie: categorie,
+//         marque: marque,
+//         modele: modele,
+//         annee: annee,
+//         kilometrage: kilometrage,
+//         puissance: puissance,
+//         description: description,
+//         prix: prix,
+//     })
+
+//     await voitures.save()
+//     res.json(voitures)
+//     return
+// })
+//*************FIN post*************
+
+
+//*/*/*/*/*/*/*/get all*/*/*/*/*/*/*/
+// app.get('/voitures', async (req, res) => {
+//     const voitures = await Voitures.find()              // On récupère toutes les voitures
+//     await res.json(voitures)
+// })
+//*/*/*/*/*/*/*/FIN get all*/*/*/*/*/*/*/
+
+
+// ************get by Price******************
+// app.get('/voitures/byPrice', async (req, res) => {
+//     let min = req.query.min;                           
+//     let max = req.query.max;
+//     const voitures = await Voitures.find({
+//         prix:  { $gte: min, $lte: max }
+//     })
+//     res.json(voitures) 
+// })
+// ************FIN get by Price******************
+
+
+//*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
+app.get('/voitures/:id', async (req, res) => {
+    // app.get('/:id', async (req, res) => {             //peut être rajouté la route /voitures/:id
+    const id = req.params.id
+    const voitures = await Voitures.findOne({ _id: id })
+    res.json(voitures)
+})
+//*/*/*/*/*/*/*/FIN get by id*/*/*/*/*/*/*/
+
+
+//*************delete*************
+app.delete('/voitures/:id', async (req, res) => {
+    const id = req.params.id
+    const voitures = await Voitures.deleteOne({ _id: id })
+    res.json(voitures)
+})
+//*************FIN delete*************
+
+
+//***************patch****************
+// app.patch('/voitures/:id', async (req, res) => {
+//     const id = req.params.id
+//     const voitures = await Voitures.findOne({ _id: id })
+
+//     const image = req.body.image;
+//     const image2 = req.body.image2;
+//     const image3 = req.body.image3;
+//     const categorie = req.body.categorie;
+//     const marque = req.body.marque;
+//     const modele = req.body.modele;
+//     const annee = req.body.annee;
+//     const kilometrage = req.body.kilometrage;
+//     const puissance = req.body.puissance;
+//     const description = req.body.description;
+//     const prix = req.body.prix;
+
+//     if (image) {
+//         voitures.image = image
+//     }
+//     if (image2) {
+//         voitures.image2 = image2
+//     }
+//     if (image3) {
+//         voitures.image3 = image3
+//     }
+//     if (categorie) {
+//         voitures.categorie = categorie
+//     }
+//     if (marque) {
+//         voitures.marque = marque
+//     }
+//     if (modele) {
+//         voitures.modele = modele
+//     }
+//     if (annee) {
+//         voitures.annee = annee
+//     }
+//     if (kilometrage) {
+//         voitures.kilometrage = kilometrage
+//     }
+//     if (puissance) {
+//         voitures.puissance = puissance
+//     }
+//     if (description) {
+//         voitures.description = description
+//     }
+//     if (prix) {
+//         voitures.prix = prix
+//     }
+
+//     await voitures.save()
+//     res.json(voitures)
+// })
+//***************FIN patch****************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // --------------METHODES VOITURES------------------------------------------
@@ -93,6 +407,18 @@ app.get('/voitures', async (req, res) => {
 //*/*/*/*/*/*/*/FIN get all*/*/*/*/*/*/*/
 
 
+// ************get by Price******************
+app.get('/voitures/byPrice', async (req, res) => {
+    let min = req.query.min;                           
+    let max = req.query.max;
+    const voitures = await Voitures.find({
+        prix:  { $gte: min, $lte: max }
+    })
+    res.json(voitures) 
+})
+// ************FIN get by Price******************
+
+
 //*/*/*/*/*/*/*/get by id*/*/*/*/*/*/*/
 app.get('/voitures/:id', async (req, res) => {
     // app.get('/:id', async (req, res) => {             //peut être rajouté la route /voitures/:id
@@ -103,16 +429,6 @@ app.get('/voitures/:id', async (req, res) => {
 //*/*/*/*/*/*/*/FIN get by id*/*/*/*/*/*/*/
 
 
-// ************get by Prix******************
-app.get('/voitures/byPrix', async (req,res) =>{
-    let min = req.query.min;                           
-    let max = req.query.max;
-    const voituresByPrix = await Voitures.find({
-        prix:  { $gte: min, $lte: max }
-    })
-    res.json(voituresByPrix) 
-})
-// ************FIN get by Prix******************
 
 
 
@@ -243,16 +559,16 @@ app.get('/motos/:id', async (req, res) => {
 //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
 
 
-// ************get by Prix******************
-app.get('/motos/byPrix', async (req,res) =>{
+// ************get by Price******************
+app.get('/motos/byPrice', async (req,res) =>{
     let min = req.query.min;                           
     let max = req.query.max;
-    const motosByPrix = await Motos.find({
+    const motosbyPrice = await Motos.find({
         prix:  { $gte: min, $lte: max }
     })
-    res.json(motosByPrix) 
+    res.json(motosbyPrice) 
 })
-// ************FIN get by Prix******************
+// ************FIN get by Price******************
 
 
 //*************delete*************
@@ -378,16 +694,16 @@ app.get('/trottinettes/:id', async (req, res) => {
 //*/*/*/*/*/*/*/fin get by id*/*/*/*/*/*/*/
 
 
-// ************get by Prix******************
-app.get('/trottinettes/byPrix', async (req,res) =>{
+// ************get by Price******************
+app.get('/trottinettes/byPrice', async (req,res) =>{
     let min = req.query.min;                           
     let max = req.query.max;
-    const trottinettesByPrix = await Trottinettes.find({
+    const trottinettesbyPrice = await Trottinettes.find({
         prix:  { $gte: min, $lte: max }
     })
-    res.json(trottinettesByPrix) 
+    res.json(trottinettesbyPrice) 
 })
-// ************FIN get by Prix******************
+// ************FIN get by Price******************
 
 
 //*************delete*************
