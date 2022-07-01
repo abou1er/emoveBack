@@ -71,7 +71,7 @@ app.get('/', async (req, res) => {
 app.get('/byPrice', async (req, res) => {
     let min = req.query.min;                           
     let max = req.query.max;                              // On trie par Prix tous les véhicules
-    const vehicules = await Vehicules.find({
+    const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
         prix:  { $gte: min, $lte: max }
     })
     res.json(vehicules) 
@@ -84,35 +84,32 @@ app.get('/byPrice', async (req, res) => {
 app.get('/byKeyWord', async (req, res)=>{                   // /byKeyWord = défintion du nom de la route pour accéder à la recherche définie après
     const param = req.query.Key                             // const param = arbitraire; "Key" = const qu'on récupèrera par la requête grace au query (dans Postman)
                                                             // const searchByKeyWord = constante arbitraire pour stocker le résultat de la recherche
-    const searchByKeyWord = await Vehicules.find({          // fonction de recherche (toute prête) find by (par critère)
+    const vehiculesbyKeyWord = await Vehicules.find({          // fonction de recherche (toute prête) find by (par critère)
         $or: [                                              // $or = indique un tableau de catégories dans lesquelles chercher
             { 'categorie': new RegExp(param, 'i') },        // RegExp() = fonction (toute prête) pour rechercher une chaîne de cractères sans respect de la casse
             { 'marque': new RegExp(param, 'i') },
-            { 'modele': new RegExp(param, 'i') },
+            { 'modele': new RegExp(param, 'i') },           // Attention! Ne recherche QUE les String (pas les Number!!!)
             { 'annee': new RegExp(param, 'i') },
-            { 'autonomie': new RegExp(param, 'i') },
+            { 'autonomie': new RegExp(param, 'i') },        // Dans Postman: http://localhost:7878/byKeyWord?Key=cooper
             { 'permis': new RegExp(param, 'i') },
             { 'kilometrage': new RegExp(param, 'i') },
-            { 'puissanceFiscale': new RegExp(param, 'i') },
-            { 'puissance': new RegExp(param, 'i') },
             { 'description': new RegExp(param, 'i') },
             { 'equivalent': new RegExp(param, 'i') },
-            { 'prix': new RegExp(param, 'i') },
           ]
     })
-    res.json(searchByKeyWord)                               // exprimer le résultat en json
+    res.json(vehiculesbyKeyWord)                               // exprimer le résultat en json
 })
 //********************FIN GET par MOT CLE******************
 
 
 //**************GET par Categorie ou par Genre
-app.get('/byCat', async (req, res) => {                 // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
-    const catBodyReq = req.query.categorie              // const catBodyReq = une constante que je définis et récupère dans ma requête grâce au query
-    const vehiculesByCat = await Vehicules.find({       // je fais une recherche find by (+ critère) dans mon objet Vehicules
+app.get('/byCat', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
+    const catBodyReq = req.query.categorie                  // const catBodyReq = une constante que je définis et récupère dans ma requête grâce au query
+    const vehiculesByCat = await Vehicules.find({           // je fais une recherche find by (+ critère) dans mon objet Vehicules
         categorie: catBodyReq
     })
-    res.json(vehiculesByCat)                            // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCategorie?categorie=Moto
-})                                                      // !!! Attention : SENSIBLE à la casse !!!
+    res.json(vehiculesByCat)                                // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
+})                                                          // !!! Attention : SENSIBLE à la casse !!!
 //********************FIN GET par Categorie******************
 
 
@@ -174,7 +171,7 @@ app.patch('/:id', async (req, res) => {
     const autonomie = req.body.autonomie;
     const permis = req.body.permis;
     const kilometrage = req.body.kilometrage;
-    const puissanceFiscale = req.body.puissanceFiscale;
+    // const puissanceFiscale = req.body.puissanceFiscale;
     const puissance = req.body.puissance;
     const description = req.body.description;
     const equivalent = req.body.equivalent;
@@ -190,7 +187,7 @@ app.patch('/:id', async (req, res) => {
     if (autonomie) {    vehicules.autonomie = autonomie }
     if (permis) {   vehicules.permis = permis   }
     if (kilometrage) {  vehicules.kilometrage = kilometrage    }
-    if (puissanceFiscale) { vehicules.puissanceFiscale = puissanceFiscale   }
+    // if (puissanceFiscale) { vehicules.puissanceFiscale = puissanceFiscale   }
     if (puissance) {    vehicules.puissance = puissance    }
     if (description) {  vehicules.description = description    }
     if (equivalent) {   vehicules.equivalent = equivalent   }

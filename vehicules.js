@@ -11,11 +11,11 @@ const schema = mongoose.Schema({
     autonomie : String,
     permis :String,
     kilometrage : String,
-    puissanceFiscale : Number,
+    // puissanceFiscale : Number,
     puissance : Number,
     description : String, 
     equivalent : String,
-    prix : Number 
+    prix : Number
 })
 
 module.exports = mongoose.model('vehicules', schema)
