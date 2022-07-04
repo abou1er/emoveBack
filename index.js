@@ -82,7 +82,7 @@ app.get('/byPrice', async (req, res) => {
 
 //***********************GET par MOT CLE******************
 
-app.get('/byKeyWord', async (req, res)=>{                   // /byKeyWord = défintion du nom de la route pour accéder à la recherche définie après
+app.get('/byKeyWord/kw', async (req, res)=>{                   // /byKeyWord = défintion du nom de la route pour accéder à la recherche définie après
     const param = req.query.Key                             // const param = arbitraire; "Key" = const qu'on récupèrera par la requête grace au query (dans Postman)
                                                             // const searchByKeyWord = constante arbitraire pour stocker le résultat de la recherche
     const vehiculesbyKeyWord = await Vehicules.find({          // fonction de recherche (toute prête) find by (par critère)
@@ -96,7 +96,7 @@ app.get('/byKeyWord', async (req, res)=>{                   // /byKeyWord = déf
             { 'kilometrage': new RegExp(param, 'i') },
             { 'description': new RegExp(param, 'i') },
             { 'equivalent': new RegExp(param, 'i') },
-          ]
+        ]
     })
     res.json(vehiculesbyKeyWord)                               // exprimer le résultat en json
 })
@@ -104,7 +104,7 @@ app.get('/byKeyWord', async (req, res)=>{                   // /byKeyWord = déf
 
 
 //**************GET par Categorie ou par Genre
-app.get('/byCat', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
+app.get('/byCat/cat/cat', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
     const catBodyReq = req.query.categorie                  // const catBodyReq = une constante que je définis et récupère dans ma requête grâce au query
     const vehiculesByCat = await Vehicules.find({           // je fais une recherche find by (+ critère) dans mon objet Vehicules
         categorie: catBodyReq
@@ -201,7 +201,7 @@ app.patch('/:id', async (req, res) => {
 
 
 //****************GET by Id*****************
-app.get('/:id', async (req, res) => {
+app.get('/get/id/id/:id', async (req, res) => {
     // app.get('/:id', async (req, res) => {             //peut être rajouté à la route /voitures/:id
     const id = req.params.id
     const vehicules = await Vehicules.findOne({ _id: id })
