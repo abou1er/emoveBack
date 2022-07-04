@@ -1,27 +1,28 @@
+require('dotenv').config()
+const { API_PORT } = process.env;
+const port = process.env.PORT || API_PORT;
+
 const express = require('express');
 let app = express(); // création de l'objet représentant notre application express
-let port = 7878;
+
+// server listening 
+app.listen(port, () => {
+  console.log('Server running on port', port);
+});
+
+
+
 const mongoose = require('mongoose');
 
 const Vehicules = require('./vehicules');
-// -----------------à SUPPRIMER-----------------------------------
-// const Voitures = require('./z-voitures');
-// const Motos = require('./z-motos');
-// const Trottinettes = require('./z-trottinettes');
-// -----------------FIN SUPPRESSION-----------------------------------
 
-
-// app.get('/', function (req, res) {  // création de la route sous le verbe get
-//     res.send('Hello world  ! ')     // envoi de hello world à l'utilisateur
+// let port = 7878;
+// app.listen(port, () => {            // ecoute du serveur sur le port 7878
+//     console.log('le serveur fonctionne sur le port 7878')
 // })
 
-
-app.listen(port, () => {            // ecoute du serveur sur le port 7878
-    console.log('le serveur fonctionne sur le port 7878')
-})
-
 mongoose.connect(
-    'mongodb+srv://abou:1234@cluster0.vn3vc.mongodb.net/emove?retryWrites=true&w=majority'
+    process.env.DB_URL
     , err => {
         if (err) throw 'erreur est : ', err;
         console.log('connected to MongoDB')
