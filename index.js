@@ -73,7 +73,8 @@ app.get('/byPrice', async (req, res) => {
     let min = req.query.min;                           
     let max = req.query.max;                              // On trie par Prix tous les véhicules
     const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
-        prix:  { $gte: min, $lte: max }
+        prix:  { $gte: min, $lte: max },
+        
     })
     res.json(vehicules) 
 })
