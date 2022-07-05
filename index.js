@@ -68,12 +68,32 @@ app.get('/', async (req, res) => {
 //*************FIN GET All**********************************
 
 
+// test
+
+//filtre mocategorie + prix
+app.get('/byCat/moto/by/price', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
+    let min = req.query.min;                           
+    let max = req.query.max;  
+    let cat = req.query.categorie                            // On trie par Prix tous les véhicules
+    const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
+        prix:  { $gte: min, $lte: max },
+        categorie : cat,
+        
+    })
+    res.json(vehicules)                               // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
+})  
+// test test
+
+
+
 // ************GET by Price******************
 app.get('/byPrice', async (req, res) => {
     let min = req.query.min;                           
-    let max = req.query.max;                              // On trie par Prix tous les véhicules
+    let max = req.query.max;  
+                               // On trie par Prix tous les véhicules
     const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
         prix:  { $gte: min, $lte: max },
+        
         
     })
     res.json(vehicules) 
@@ -103,12 +123,25 @@ app.get('/byKeyWord/kw', async (req, res)=>{                   // /byKeyWord = d
 })
 //********************FIN GET par MOT CLE******************
 
+// test test
+//**************GET par Categorie ou par Genre
+app.get('/byCat/cat/cat/permis', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
+    const permisBodyReq = req.query.permis                  // const catBodyReq = une constante que je définis et récupère dans ma requête grâce au query
+    const vehiculesByCatpermis = await Vehicules.find({           // je fais une recherche find by (+ critère) dans mon objet Vehicules
+        permis: permisBodyReq,
+    })
+    res.json(vehiculesByCatpermis)                                // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
+})                                                          // !!! Attention : SENSIBLE à la casse !!!
+//********************FIN GET par Categorie******************
+
+
+
 
 //**************GET par Categorie ou par Genre
 app.get('/byCat/cat/cat', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
     const catBodyReq = req.query.categorie                  // const catBodyReq = une constante que je définis et récupère dans ma requête grâce au query
     const vehiculesByCat = await Vehicules.find({           // je fais une recherche find by (+ critère) dans mon objet Vehicules
-        categorie: catBodyReq
+        categorie: catBodyReq,
     })
     res.json(vehiculesByCat)                                // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
 })                                                          // !!! Attention : SENSIBLE à la casse !!!
