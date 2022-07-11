@@ -7,7 +7,7 @@ let app = express(); // création de l'objet représentant notre application exp
 
 // server listening 
 app.listen(port, () => {
-  console.log('Server running on port', port);
+    console.log('Server running on port', port);
 });
 
 
@@ -62,9 +62,29 @@ app.use(express.urlencoded({ extended: false }));
 
 //*****************GET All**********************************
 app.get('/', async (req, res) => {
-    const vehicules = await Vehicules.find()              // On récupère tous les véhicules
-    await res.json(vehicules)
+    const { page = 1, limit = 6 } = req.query;
+    try {
+        const vehicules = await Vehicules.find()
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .exec();
+        const count = await Vehicules.countDocuments();
+
+        res.json({
+            vehicules,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        });
+    }
+    catch (err) {
+        console.error(err.message);
+    }
 })
+
+
+// On récupère tous les véhicules
+// await res.json(vehicules)
+
 //*************FIN GET All**********************************
 
 
@@ -72,40 +92,40 @@ app.get('/', async (req, res) => {
 
 //filtre mocategorie + prix
 app.get('/byCat/moto/by/price', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
-    let min = req.query.min;                           
-    let max = req.query.max;  
+    let min = req.query.min;
+    let max = req.query.max;
     let cat = req.query.categorie                            // On trie par Prix tous les véhicules
     const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
-        prix:  { $gte: min, $lte: max },
-        categorie : cat,
-        
+        prix: { $gte: min, $lte: max },
+        categorie: cat,
+
     })
     res.json(vehicules)                               // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
-})  
+})
 // test test
 
 
 
 // ************GET by Price******************
 app.get('/byPrice', async (req, res) => {
-    let min = req.query.min;                           
-    let max = req.query.max;  
-                               // On trie par Prix tous les véhicules
+    let min = req.query.min;
+    let max = req.query.max;
+    // On trie par Prix tous les véhicules
     const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byPrice?min=30000&max=40000
-        prix:  { $gte: min, $lte: max },
-        
-        
+        prix: { $gte: min, $lte: max },
+
+
     })
-    res.json(vehicules) 
+    res.json(vehicules)
 })
 // ************FIN GET by Price******************
 
 
 //***********************GET par MOT CLE******************
 
-app.get('/byKeyWord/kw', async (req, res)=>{                   // /byKeyWord = défintion du nom de la route pour accéder à la recherche définie après
+app.get('/byKeyWord/kw', async (req, res) => {                   // /byKeyWord = défintion du nom de la route pour accéder à la recherche définie après
     const param = req.query.Key                             // const param = arbitraire; "Key" = const qu'on récupèrera par la requête grace au query (dans Postman)
-                                                            // const searchByKeyWord = constante arbitraire pour stocker le résultat de la recherche
+    // const searchByKeyWord = constante arbitraire pour stocker le résultat de la recherche
     const vehiculesbyKeyWord = await Vehicules.find({          // fonction de recherche (toute prête) find by (par critère)
         $or: [                                              // $or = indique un tableau de catégories dans lesquelles chercher
             { 'categorie': new RegExp(param, 'i') },        // RegExp() = fonction (toute prête) pour rechercher une chaîne de cractères sans respect de la casse
@@ -174,13 +194,13 @@ app.post('/', async (req, res) => {
         marque: marque,
         modele: modele,
         annee: annee,
-        autonomie : autonomie,
-        permis : permis,
+        autonomie: autonomie,
+        permis: permis,
         kilometrage: kilometrage,
         // puissanceFiscale : puissanceFiscale,
         puissance: puissance,
         description: description,
-        equivalent : equivalent,
+        equivalent: equivalent,
         prix: prix,
     })
 
@@ -212,21 +232,21 @@ app.patch('/:id', async (req, res) => {
     const equivalent = req.body.equivalent;
     const prix = req.body.prix;
 
-    if (image) {    vehicules.image = image    }
-    if (image2) {   vehicules.image2 = image2    }
-    if (image3) {   vehicules.image3 = image3    }
-    if (categorie) {    vehicules.categorie = categorie    }
-    if (marque) {   vehicules.marque = marque    }
-    if (modele) {   vehicules.modele = modele    }
-    if (annee) {    vehicules.annee = annee    }
-    if (autonomie) {    vehicules.autonomie = autonomie }
-    if (permis) {   vehicules.permis = permis   }
-    if (kilometrage) {  vehicules.kilometrage = kilometrage    }
+    if (image) { vehicules.image = image }
+    if (image2) { vehicules.image2 = image2 }
+    if (image3) { vehicules.image3 = image3 }
+    if (categorie) { vehicules.categorie = categorie }
+    if (marque) { vehicules.marque = marque }
+    if (modele) { vehicules.modele = modele }
+    if (annee) { vehicules.annee = annee }
+    if (autonomie) { vehicules.autonomie = autonomie }
+    if (permis) { vehicules.permis = permis }
+    if (kilometrage) { vehicules.kilometrage = kilometrage }
     // if (puissanceFiscale) { vehicules.puissanceFiscale = puissanceFiscale   }
-    if (puissance) {    vehicules.puissance = puissance    }
-    if (description) {  vehicules.description = description    }
-    if (equivalent) {   vehicules.equivalent = equivalent   }
-    if (prix) { vehicules.prix = prix    }
+    if (puissance) { vehicules.puissance = puissance }
+    if (description) { vehicules.description = description }
+    if (equivalent) { vehicules.equivalent = equivalent }
+    if (prix) { vehicules.prix = prix }
 
     await vehicules.save()
     res.json(vehicules)
@@ -310,12 +330,12 @@ app.delete('/:id', async (req, res) => {
 
 // ************get by Price******************
 // app.get('/voitures/byPrice', async (req, res) => {
-//     let min = req.query.min;                           
+//     let min = req.query.min;
 //     let max = req.query.max;
 //     const voitures = await Voitures.find({
 //         prix:  { $gte: min, $lte: max }
 //     })
-//     res.json(voitures) 
+//     res.json(voitures)
 // })
 // ************FIN get by Price******************
 
@@ -459,12 +479,12 @@ app.delete('/:id', async (req, res) => {
 
 // ************get by Price******************
 // app.get('/motos/byPrice', async (req,res) =>{
-//     let min = req.query.min;                           
+//     let min = req.query.min;
 //     let max = req.query.max;
 //     const motosbyPrice = await Motos.find({
 //         prix:  { $gte: min, $lte: max }
 //     })
-//     res.json(motosbyPrice) 
+//     res.json(motosbyPrice)
 // })
 // ************FIN get by Price******************
 
@@ -594,12 +614,12 @@ app.delete('/:id', async (req, res) => {
 
 // ************get by Price******************
 // app.get('/trottinettes/byPrice', async (req,res) =>{
-//     let min = req.query.min;                           
+//     let min = req.query.min;
 //     let max = req.query.max;
 //     const trottinettesbyPrice = await Trottinettes.find({
 //         prix:  { $gte: min, $lte: max }
 //     })
-//     res.json(trottinettesbyPrice) 
+//     res.json(trottinettesbyPrice)
 // })
 // ************FIN get by Price******************
 
