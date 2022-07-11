@@ -62,24 +62,30 @@ app.use(express.urlencoded({ extended: false }));
 
 //*****************GET All**********************************
 app.get('/', async (req, res) => {
-    const { page = 1, limit = 6 } = req.query;
-    try {
-        const vehicules = await Vehicules.find()
-            .limit(limit * 1)
-            .skip((page - 1) * limit)
-            .exec();
-        const count = await Vehicules.countDocuments();
-
-        res.json({
-            vehicules,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page
-        });
-    }
-    catch (err) {
-        console.error(err.message);
-    }
+    const vehicules = await Vehicules.find()              // On récupère tous les véhicules
+    await res.json(vehicules)
 })
+
+// test pagination
+// app.get('/', async (req, res) => {
+//     const { page = 1, limit = 6 } = req.query;
+//     try {
+//         const vehicules = await Vehicules.find()
+//             .limit(limit * 1)
+//             .skip((page - 1) * limit)
+//             .exec();
+//         const count = await Vehicules.countDocuments();
+
+//         res.json({
+//             vehicules,
+//             totalPages: Math.ceil(count / limit),
+//             currentPage: page
+//         });
+//     }
+//     catch (err) {
+//         console.error(err.message);
+//     }
+// })
 
 
 // On récupère tous les véhicules
