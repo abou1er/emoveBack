@@ -108,7 +108,23 @@ app.get('/byCat/moto/by/price', async (req, res) => {                     // la 
     })
     res.json(vehicules)                               // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat?categorie=moto
 })
-// test test
+
+// categorie+prix+permis
+app.get('/byCat/category/by/price/permis', async (req, res) => {                     // la syntaxe '/...' désigne un query (une requête) // on crée un chemin qu'on lui indique
+    let min = req.query.min;
+    let max = req.query.max;
+    let cat = req.query.categorie 
+    let permis = req.query.permis                            // On trie par Prix tous les véhicules
+    const vehicules = await Vehicules.find({              // dans Postman: http://localhost:7878/byCat/category/by/price/permis?min=2000&max=10000&categorie=moto&permis=sans permis
+        prix: { $gte: min, $lte: max },
+        categorie: cat,
+        permis : permis,
+
+    })
+    res.json(vehicules)                               // j'envoie la réponse qui figure dans Postman en réponse à cette recherche: http://localhost:7878/byCat/category/by/price/permis?min=2000&max=10000&categorie=moto&permis=sans permis
+})
+// fin categorie+prix+permis
+
 
 
 
