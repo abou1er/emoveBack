@@ -310,6 +310,62 @@ app.get('/commande/id/:id', async (req, res) => {
         res.json(commandes)
     })
     //****************GET commandes by Id*****************
+    //***************PATCH****************
+app.patch('/:id', async (req, res) => {
+    const id = req.params.id
+    const commandes = await Commandes.findOne({ _id: id })
+
+    const image = req.body.image;
+    const image2 = req.body.image2;
+    const image3 = req.body.image3;
+    const categorie = req.body.categorie;
+    const marque = req.body.marque;
+    const modele = req.body.modele;
+    const annee = req.body.annee;
+    const autonomie = req.body.autonomie;
+    const permis = req.body.permis;
+    const kilometrage = req.body.kilometrage;
+    // const puissanceFiscale = req.body.puissanceFiscale;
+    const puissance = req.body.puissance;
+    const description = req.body.description;
+    const equivalent = req.body.equivalent;
+    const prix = req.body.prix;
+    const sex = req.body.sex;
+    const nom = req.body.nom;
+    const prenom = req.body.prenom;
+    const age = req.body.age;
+    const adresseMail = req.body.adresseMail;
+    const adresse = req.body.adresse;
+    const ville = req.body.ville;
+    const codePostal = req.body.codePostal;
+
+    if (image) { commandes.image = image }
+    if (image2) { commandes.image2 = image2 }
+    if (image3) { commandes.image3 = image3 }
+    if (categorie) { commandes.categorie = categorie }
+    if (marque) { commandes.marque = marque }
+    if (modele) { commandes.modele = modele }
+    if (annee) { commandes.annee = annee }
+    if (autonomie) { commandes.autonomie = autonomie }
+    if (permis) { commandes.permis = permis }
+    if (kilometrage) { commandes.kilometrage = kilometrage }
+    if (puissance) { commandes.puissance = puissance }
+    if (description) { commandes.description = description }
+    if (equivalent) { commandes.equivalent = equivalent }
+    if (prix) { commandes.prix = prix }
+    if (sex) { commandes.sex = sex }
+    if (nom) { commandes.nom = nom }
+    if (prenom) { commandes.prenom = prenom }
+    if (age) { commandes.age = age }
+    if (adresseMail) { commandes.adresseMail = adresseMail }
+    if (adresse) { commandes.adresse = adresse }
+    if (ville) { commandes.ville = ville }
+    if (codePostal) { commandes.codePostal = codePostal }
+
+    await commandes.save()
+    res.json(commandes)
+})
+//***************FIN PATCH****************
     // FIN METHODE COMMANDES
 
 
