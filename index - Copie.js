@@ -58,6 +58,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
+
 // --------------METHODES Vehicules------------------------------------------
 
 //*****************GET All**********************************
@@ -190,7 +191,7 @@ app.get('/byCat/cat/cat', async (req, res) => {                     // la syntax
 //********************FIN GET par Categorie******************
 
 
-//*******************POST Vehicules************************
+//*******************POST************************
 app.post('/', async (req, res) => {
     const image = req.body.image;
     const image2 = req.body.image2;
@@ -230,89 +231,7 @@ app.post('/', async (req, res) => {
     res.json(vehicules)
     return
 })
-//***********************FIN POST Vehicules********************
-
-
-                // METHODE COMMANDES
-//*******************POST Commandes************************
-app.post('/commandes', async (req, res) => {
-    const image = req.body.image;
-    const image2 = req.body.image2;
-    const image3 = req.body.image3;
-    const categorie = req.body.categorie;
-    const marque = req.body.marque;
-    const modele = req.body.modele;
-    const annee = req.body.annee;
-    const autonomie = req.body.autonomie;
-    const permis = req.body.permis;
-    const kilometrage = req.body.kilometrage;
-    const puissance = req.body.puissance;
-    const description = req.body.description;
-    const equivalent = req.body.equivalent;
-    const prix = req.body.prix;
-    const sex = req.body.sex;
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const age = req.body.age;
-    const adresseMail = req.body.adresseMail;
-    const adresse = req.body.adresse;
-    const ville = req.body.ville;
-    const codePostal = req.body.codePostal;
-
-
-
-    const commandes = new Commandes({
-        image: image,
-        image2: image2,
-        image3: image3,
-        categorie: categorie,
-        marque: marque,
-        modele: modele,
-        annee: annee,
-        autonomie: autonomie,
-        permis: permis,
-        kilometrage: kilometrage,
-        puissance: puissance,
-        description: description,
-        equivalent: equivalent,
-        prix: prix,
-        sex: sex,
-        nom: nom,
-        prenom: prenom,
-        age: age,
-        adresseMail: adresseMail,
-        adresse: adresse,
-        ville: ville,
-        codePostal: codePostal,
-
-
-    })
-
-    await commandes.save()
-    res.json(commandes)
-    return
-})
-//***********************FIN POST Commandes********************
-
-//*****************GET Allcommandes**********************************
-app.get('/commandes', async (req, res) => {
-    const commandes = await Commandes.find()              // On récupère tous les véhicules
-    await res.json(commandes)
-})
-// fin get all commandes
-//****************GET commandes by Id***************** 
-// fonctionne PAS je ne sais pas pk
-app.get('/commande/id/:id', async (req, res) => {
-    // app.get('commande/get/com/id/id/com:id', async (req, res) => {
-        // app.get('/:id', async (req, res) => {             //peut être rajouté à la route /voitures/:id
-        const id = req.params.id
-        const commandes = await Commandes.findOne({ _id: id })
-        res.json(commandes)
-    })
-    //****************GET commandes by Id*****************
-    // FIN METHODE COMMANDES
-
-
+//***********************FIN POST********************
 
 
 //***************PATCH****************
