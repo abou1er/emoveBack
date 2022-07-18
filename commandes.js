@@ -24,6 +24,7 @@ const schema = mongoose.Schema({
     adresse: String,
     ville: String,
     codePostal: Number,
+    confirme: Boolean,
 })
 
 module.exports = mongoose.model('commandes', schema)

@@ -258,6 +258,7 @@ app.post('/commandes', async (req, res) => {
     const adresse = req.body.adresse;
     const ville = req.body.ville;
     const codePostal = req.body.codePostal;
+    const confirme = req.body.confirme;
 
 
 
@@ -284,6 +285,7 @@ app.post('/commandes', async (req, res) => {
         adresse: adresse,
         ville: ville,
         codePostal: codePostal,
+        confirme: confirme,
 
 
     })
@@ -338,6 +340,7 @@ app.patch('/:id', async (req, res) => {
     const adresse = req.body.adresse;
     const ville = req.body.ville;
     const codePostal = req.body.codePostal;
+    const confirme = req.body.confirme;
 
     if (image) { commandes.image = image }
     if (image2) { commandes.image2 = image2 }
@@ -361,7 +364,7 @@ app.patch('/:id', async (req, res) => {
     if (adresse) { commandes.adresse = adresse }
     if (ville) { commandes.ville = ville }
     if (codePostal) { commandes.codePostal = codePostal }
-
+    if (confirme) { commandes.confirme = confirme }
     await commandes.save()
     res.json(commandes)
 })
