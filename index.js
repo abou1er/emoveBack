@@ -313,7 +313,22 @@ app.get('/commande/id/:id', async (req, res) => {
     })
     //****************GET commandes by Id*****************
     //***************PATCH****************
+
+// app.patch('/:id', async (req, res) => {
+//     const confirme = req.body.confirme;
+    
+//     console.log("config : ", confirme);
+//     const id = req.params.id
+//     const commandes = await Commandes.findOne({ _id: id })
+//     if (confirme) { commandes.confirme = confirme }
+//     await commandes.save()
+//         res.json(commandes)
+
+// })
+
+
 app.patch('/:id', async (req, res) => {
+    console.log("config : ", req.body.confirme);
     const id = req.params.id
     const commandes = await Commandes.findOne({ _id: id })
 
@@ -327,7 +342,6 @@ app.patch('/:id', async (req, res) => {
     const autonomie = req.body.autonomie;
     const permis = req.body.permis;
     const kilometrage = req.body.kilometrage;
-    // const puissanceFiscale = req.body.puissanceFiscale;
     const puissance = req.body.puissance;
     const description = req.body.description;
     const equivalent = req.body.equivalent;
@@ -370,6 +384,47 @@ app.patch('/:id', async (req, res) => {
 })
 //***************FIN PATCH****************
     // FIN METHODE COMMANDES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
